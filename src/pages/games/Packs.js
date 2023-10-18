@@ -1,17 +1,35 @@
 import { ArrowDownIcon, CheckCircleIcon, UpDownIcon } from "@chakra-ui/icons";
-import { Flex, Container, SimpleGrid, Button, Stack } from "@chakra-ui/react";
+import {
+	Flex,
+	Container,
+	SimpleGrid,
+	Button,
+	Stack,
+	CircularProgress,
+} from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import PackCard from "../../components/games/PackCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Packs() {
 	const [filter, setFilter] = useState("featured");
+	const [sets, setSets] = useState([]);
 
 	// Grabbing a user from global storage via redux
 	const user = useSelector((state) => state.data.user.user);
 
+	useEffect(() => {
+		try {
+			fetch(`${process.env.REACT_APP_API_ENDPOINT}/pokemon/sets`)
+				.then((response) => response.json())
+				.then((data) => setSets(data.message));
+		} catch (error) {
+			console.warn(error);
+		}
+	}, []);
+
 	return (
-		<Container as={Stack} maxWidth={"5xl"}>
+		<Container as={Stack} maxWidth={"full"}>
 			<Stack alignItems={"center"} justifyContent={"space-between"}>
 				<Flex>
 					<Button
@@ -52,62 +70,32 @@ export default function Packs() {
 				flexWrap={"wrap"}
 				flexDirection={"row"}
 			>
-				<PackCard
-					price={Math.floor(Math.random() * (800 - 1) + 1)}
-					name={"Scarlet & Violet 151"}
-					rating={Math.floor(Math.random() * 6)}
-					numReviews={Math.floor(Math.random() * 2500)}
-					imageURL={"https://images.pokemontcg.io/sv3pt5/logo.png"}
-					tag={"HOT"}
-					packId={"sv3pt5"}
-				/>
-				<PackCard
-					price={Math.floor(Math.random() * (800 - 1) + 1)}
-					name={"Obsidian Flames"}
-					rating={Math.floor(Math.random() * 6)}
-					numReviews={Math.floor(Math.random() * 2500)}
-					imageURL={"https://images.pokemontcg.io/sv3/logo.png"}
-					tag={"Featured"}
-					packId={"sv3"}
-				/>
-				<PackCard
-					price={Math.floor(Math.random() * (800 - 1) + 1)}
-					name={"Mystery Pack"}
-					rating={Math.floor(Math.random() * 6)}
-					numReviews={Math.floor(Math.random() * 2500)}
-					imageURL={"https://images.pokemontcg.io/sve/logo.png"}
-					tag={"NEW"}
-					packId={"sve"}
-				/>
-				<PackCard
-					price={Math.floor(Math.random() * (800 - 1) + 1)}
-					name={"Paldea Evolved"}
-					rating={Math.floor(Math.random() * 6)}
-					numReviews={Math.floor(Math.random() * 2500)}
-					imageURL={"https://images.pokemontcg.io/sv2/logo.png"}
-					tag={"HOT"}
-					packId={"sv2"}
-				/>
-				<PackCard
-					price={Math.floor(Math.random() * (800 - 1) + 1)}
-					name={"Mystery Pack"}
-					rating={Math.floor(Math.random() * 6)}
-					numReviews={Math.floor(Math.random() * 2500)}
-					imageURL={"https://images.pokemontcg.io/svp/logo.png"}
-					tag={"Featured"}
-					packId={"svp"}
-				/>
-				<PackCard
-					price={Math.floor(Math.random() * (800 - 1) + 1)}
-					name={"Scarlet & Violet"}
-					rating={Math.floor(Math.random() * 6)}
-					numReviews={Math.floor(Math.random() * 2500)}
-					imageURL={"https://images.pokemontcg.io/sv1/logo.png"}
-					tag={"NEW"}
-					packId={"sv1"}
-				/>
+				{sets?.data ? (
+					sets?.data?.map((set) => {
+						return (
+							<PackCard
+								price={Math.floor(Math.random() * (800 - 1) + 1)}
+								name={set.name}
+								imageURL={set.images.logo}
+								tag={set.ptcgoCode}
+								packId={set.id}
+							/>
+						);
+					})
+				) : (
+					<CircularProgress
+						isIndeterminate
+						color="teal.300"
+						objectFit="contain"
+						maxW={{ base: "100%" }}
+						m={5}
+						p={2}
+						mr={"auto"}
+						ml={"auto"}
+					/>
+				)}
 			</Stack>
-			<Button
+			{/* <Button
 				variant={"solid"}
 				colorScheme={"teal"}
 				size={"md"}
@@ -115,7 +103,7 @@ export default function Packs() {
 				leftIcon={<ArrowDownIcon />}
 			>
 				Load More
-			</Button>
+			</Button> */}
 		</Container>
 	);
 }

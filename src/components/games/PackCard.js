@@ -64,8 +64,7 @@ export default function PackCard({
 		<Flex p={2} alignItems="center" justifyContent="center">
 			<Box
 				bg={useColorModeValue("white", "gray.800")}
-				maxW={"340px"}
-				w={"full"}
+				w={"300px"}
 				borderWidth="1px"
 				rounded="lg"
 				shadow="lg"
@@ -115,7 +114,7 @@ export default function PackCard({
 							color={"gray.800"}
 							fontSize={"1.2em"}
 						>
-							<Link to={`/packs/${data.packId}/${data.name}/${price}`}>
+							<Link to={`/packs/${data.packId}/${data.name}`}>
 								<chakra.a display={"flex"}>
 									<Icon as={FiShoppingCart} h={7} w={7} alignSelf={"center"} />
 								</chakra.a>

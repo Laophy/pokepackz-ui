@@ -8,7 +8,7 @@ import {
 	Image,
 } from "@chakra-ui/react";
 
-export default function RewardCard({ imageURL, price, chance, name, rarity }) {
+export default function RewardCard({ card, imageURL, price, chance, name }) {
 	return (
 		<Center py={12}>
 			<Box
@@ -60,12 +60,12 @@ export default function RewardCard({ imageURL, price, chance, name, rarity }) {
 					</Heading>
 					<Stack direction={"row"} align={"center"}>
 						<Text fontWeight={800} fontSize={"xl"}>
-							${price}
+							₤{price}
 						</Text>
 					</Stack>
-					<Text color={"gray.500"} fontSize={"sm"} textTransform={"uppercase"}>
+					{/* <Text color={"gray.500"} fontSize={"sm"} textTransform={"uppercase"}>
 						{chance}%
-					</Text>
+					</Text> */}
 				</Stack>
 			</Box>
 		</Center>

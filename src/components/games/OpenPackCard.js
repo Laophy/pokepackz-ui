@@ -1,24 +1,21 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
 	Button,
+	CircularProgress,
 	Container,
 	Divider,
 	Flex,
 	Heading,
 	Image,
+	Spinner,
 	Stack,
 	Text,
 	useBreakpointValue,
 } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 
-export default function OpenPackCard({
-	title,
-	subTitle,
-	description,
-	imageURL,
-}) {
-	const { packId, name, price } = useParams();
+export default function OpenPackCard({ set, title }) {
+	const { packId, name } = useParams();
 
 	return (
 		<Container as={Stack} maxW={"100%"}>
@@ -36,7 +33,7 @@ export default function OpenPackCard({
 						</Button>
 					</Link>
 					<Button variant={"ghost"} colorScheme={"teal"} size={"md"}>
-						₤{price}
+						₤0.00
 					</Button>
 				</Flex>
 			</Stack>
@@ -58,15 +55,15 @@ export default function OpenPackCard({
 									zIndex: -1,
 								}}
 							>
-								{name}
+								{set?.name ? set?.name : "Loading..."}
 							</Text>
 							<br />{" "}
 							<Text color={"teal.400"} as={"span"}>
-								{packId}
+								{set?.series} Series
 							</Text>{" "}
 						</Heading>
 						<Text fontSize={{ base: "md", lg: "lg" }} color={"gray.500"}>
-							{description}
+							{`There is a total of ${set?.printedTotal} printed cards in this set. ${set?.name} set was released on ${set?.releaseDate} and is in the ${set?.series} series.`}
 						</Text>
 						<Stack direction={{ base: "column", md: "row" }} spacing={4}>
 							<Button
@@ -77,20 +74,33 @@ export default function OpenPackCard({
 									bg: "teal.500",
 								}}
 							>
-								Buy for ₤{price}
+								Buy for ₤0.00
 							</Button>
 							<Button rounded={"full"}>Try Free</Button>
 						</Stack>
 					</Stack>
 				</Flex>
 				<Flex align={"center"} justify={"center"}>
-					<Image
-						alt={`Loot box for pack ${title}`}
-						objectFit={"cover"}
-						maxH={400}
-						maxW={450}
-						src={`https://images.pokemontcg.io/${packId}/logo.png`}
-					/>
+					{set?.images?.logo ? (
+						<Image
+							alt={`Loot box for pack ${title}`}
+							objectFit={"cover"}
+							maxH={400}
+							maxW={450}
+							src={set?.images?.logo}
+						/>
+					) : (
+						<CircularProgress
+							isIndeterminate
+							color="teal.300"
+							objectFit="contain"
+							maxW={{ base: "100%" }}
+							m={5}
+							p={2}
+							mr={"auto"}
+							ml={"auto"}
+						/>
+					)}
 				</Flex>
 			</Stack>
 		</Container>
