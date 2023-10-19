@@ -64,6 +64,7 @@ export default function PackCard({
 		<Flex p={2} alignItems="center" justifyContent="center">
 			<Box
 				bg={useColorModeValue("white", "gray.800")}
+				w={250}
 				borderWidth="1px"
 				rounded="lg"
 				shadow="lg"
@@ -81,9 +82,11 @@ export default function PackCard({
 					src={data.imageURL}
 					alt={`Picture of ${data.name}`}
 					roundedTop="lg"
-					width={250}
-					height={150}
+					w={250}
+					h={150}
 					m={1}
+					mr={"auto"}
+					ml={"auto"}
 					objectFit={"contain"}
 				/>
 
