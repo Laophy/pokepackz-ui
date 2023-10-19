@@ -65,9 +65,8 @@ export default function PackCard({
 			<Box
 				bg={useColorModeValue("white", "gray.800")}
 				w={250}
-				borderWidth="1px"
 				rounded="lg"
-				shadow="lg"
+				boxShadow={"rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;"}
 				position="relative"
 			>
 				<Circle
@@ -114,8 +113,17 @@ export default function PackCard({
 								{data.name}
 							</Box>
 						</Tooltip>
+					</Flex>
+
+					<Flex justifyContent="space-between" alignContent="center">
+						<Box fontSize="2xl" color={useColorModeValue("gray.800", "white")}>
+							<Box as="span" color={"gray.600"} fontSize="lg">
+								$
+							</Box>{" "}
+							{data.price.toFixed(2)}
+						</Box>
 						<Tooltip
-							label={`Open ${data.name} pack`}
+							label={`Open pack`}
 							bg="white"
 							placement={"top"}
 							color={"teal.600"}
@@ -127,15 +135,6 @@ export default function PackCard({
 								</chakra.a>
 							</Link>
 						</Tooltip>
-					</Flex>
-
-					<Flex justifyContent="space-between" alignContent="center">
-						<Box fontSize="2xl" color={useColorModeValue("gray.800", "white")}>
-							<Box as="span" color={"gray.600"} fontSize="lg">
-								$
-							</Box>{" "}
-							{data.price.toFixed(2)}
-						</Box>
 					</Flex>
 				</Box>
 			</Box>
