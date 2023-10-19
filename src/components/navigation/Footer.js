@@ -57,7 +57,7 @@ export default function Footer() {
 					<Stack spacing={6}>
 						<Box>
 							<Text fontSize={"lg"} fontWeight={"bold"}>
-								PokePackz
+								PokeCrates
 							</Text>
 						</Box>
 						<Text fontSize={"sm"}>Open mystery packs or battles others!</Text>
@@ -120,12 +120,10 @@ export default function Footer() {
 						justify={{ base: "center", md: "space-between" }}
 						align={{ base: "center", md: "center" }}
 					>
-						<Text fontSize={"sm"}>
-							Copyright © PokePackz Studios Limited 2023
-						</Text>
+						<Text fontSize={"sm"}>Copyright © PokeCrates LLC 2023</Text>
 						<Stack direction={"row"} spacing={6}>
 							<Text fontSize={"sm"} as={"em"}>
-								support@PokePackz.com
+								support@PokeCrates.com
 							</Text>
 						</Stack>
 					</Container>

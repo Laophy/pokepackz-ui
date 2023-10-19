@@ -105,7 +105,7 @@ export default function Navbar({ websiteContent }) {
 					/>
 					<HStack spacing={8} alignItems={"center"}>
 						<Box fontWeight={800} fontSize={"22px"}>
-							PokePackz
+							PokeCrates
 						</Box>
 						<HStack
 							as={"nav"}
