@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 export default function Packs() {
 	const [filter, setFilter] = useState("featured");
 	const [sets, setSets] = useState([]);
+	const [loadingSets, setLoadingSets] = useState(true);
 
 	// Grabbing a user from global storage via redux
 	const user = useSelector((state) => state.data.user.user);
@@ -22,7 +23,12 @@ export default function Packs() {
 		try {
 			fetch(`${process.env.REACT_APP_API_ENDPOINT}/pokemon/sets`)
 				.then((response) => response.json())
-				.then((data) => setSets(data.message));
+				.then((data) => {
+					setSets(data.message.data.reverse());
+				})
+				.then(() => {
+					setLoadingSets(false);
+				});
 		} catch (error) {
 			console.warn(error);
 		}
@@ -70,11 +76,12 @@ export default function Packs() {
 				flexWrap={"wrap"}
 				flexDirection={"row"}
 			>
-				{sets?.data ? (
-					sets?.data?.map((set) => {
+				{!loadingSets ? (
+					sets?.map((set) => {
 						return (
 							<PackCard
-								price={Math.floor(Math.random() * (800 - 1) + 1)}
+								key={set.id}
+								price={0.0}
 								name={set.name}
 								imageURL={set.images.logo}
 								tag={set.ptcgoCode}

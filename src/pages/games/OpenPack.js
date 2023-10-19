@@ -77,11 +77,12 @@ export default function OpenPack({ title }) {
 					cards?.map((card) => {
 						return (
 							<RewardCard
+								key={card.id}
 								price={card.cardmarket.prices.avg30}
 								rarity={card.rarity}
 								name={card.name}
 								imageURL={card.images.small}
-								card
+								card={card}
 							/>
 						);
 					})

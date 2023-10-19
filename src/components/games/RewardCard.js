@@ -60,7 +60,7 @@ export default function RewardCard({ card, imageURL, price, chance, name }) {
 					</Heading>
 					<Stack direction={"row"} align={"center"}>
 						<Text fontWeight={800} fontSize={"xl"}>
-							₤{price}
+							${price}
 						</Text>
 					</Stack>
 					{/* <Text color={"gray.500"} fontSize={"sm"} textTransform={"uppercase"}>

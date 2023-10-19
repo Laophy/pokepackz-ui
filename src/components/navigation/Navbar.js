@@ -129,7 +129,7 @@ export default function Navbar({ websiteContent }) {
 									size={"sm"}
 									mr={4}
 								>
-									₤0.00
+									$0.00
 								</Button>
 							</Box>
 						) : (

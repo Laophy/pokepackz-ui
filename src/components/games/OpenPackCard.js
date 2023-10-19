@@ -33,7 +33,7 @@ export default function OpenPackCard({ set, title }) {
 						</Button>
 					</Link>
 					<Button variant={"ghost"} colorScheme={"teal"} size={"md"}>
-						₤0.00
+						$0.00
 					</Button>
 				</Flex>
 			</Stack>
@@ -74,7 +74,7 @@ export default function OpenPackCard({ set, title }) {
 									bg: "teal.500",
 								}}
 							>
-								Buy for ₤0.00
+								Buy for $0.00
 							</Button>
 							<Button rounded={"full"}>Try Free</Button>
 						</Stack>
