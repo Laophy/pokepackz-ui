@@ -1,5 +1,6 @@
 import {
 	ArrowDownIcon,
+	CalendarIcon,
 	CheckCircleIcon,
 	Search2Icon,
 	UpDownIcon,
@@ -22,7 +23,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Packs() {
-	const [filter, setFilter] = useState("featured");
+	const [filter, setFilter] = useState("price");
 	const [sets, setSets] = useState([]);
 	const [loadingSets, setLoadingSets] = useState(true);
 
@@ -44,6 +45,46 @@ export default function Packs() {
 		}
 	}, []);
 
+	useEffect(() => {
+		setLoadingSets(true);
+		const updateFilteredSets = () => {
+			// Filter by featured, price, hot
+			switch (filter) {
+				case "price": {
+					const sortedCards = sets.sort(
+						(a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
+					);
+					setSets(sortedCards);
+					setLoadingSets(false);
+					break;
+				}
+				case "release": {
+					const sortedCards = sets.sort(
+						(a, b) => new Date(a.releaseDate) - new Date(b.releaseDate)
+					);
+					setSets(sortedCards);
+					setLoadingSets(false);
+					break;
+				}
+				case "cards": {
+					const sortedCards = sets.sort((a, b) => a.total - b.total);
+					setSets(sortedCards);
+					setLoadingSets(false);
+					break;
+				}
+				default: {
+					const sortedCards = sets.sort(
+						(a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
+					);
+					setSets(sortedCards);
+					setLoadingSets(false);
+				}
+			}
+		};
+
+		updateFilteredSets();
+	}, [filter]);
+
 	return (
 		<Container as={Stack} maxWidth={"6xl"}>
 			<Stack
@@ -55,33 +96,39 @@ export default function Packs() {
 				<Flex>
 					<Button
 						variant={"solid"}
-						colorScheme={filter === "featured" ? "teal" : "gray"}
-						size={"md"}
-						mr={4}
-						leftIcon={<CheckCircleIcon />}
-						onClick={(e) => setFilter("featured")}
-					>
-						Featured
-					</Button>
-					<Button
-						variant={"solid"}
-						colorScheme={filter === "hot" ? "teal" : "gray"}
-						size={"md"}
-						mr={4}
-						leftIcon={<UpDownIcon />}
-						onClick={(e) => setFilter("hot")}
-					>
-						Hot
-					</Button>
-					<Button
-						variant={"solid"}
 						colorScheme={filter === "price" ? "teal" : "gray"}
 						size={"md"}
 						mr={4}
 						leftIcon={<ArrowDownIcon />}
-						onClick={(e) => setFilter("price")}
+						onClick={(e) => {
+							setFilter("price");
+						}}
 					>
 						Price
+					</Button>
+					<Button
+						variant={"solid"}
+						colorScheme={filter === "release" ? "teal" : "gray"}
+						size={"md"}
+						mr={4}
+						leftIcon={<CalendarIcon />}
+						onClick={(e) => {
+							setFilter("release");
+						}}
+					>
+						Release Date
+					</Button>
+					<Button
+						variant={"solid"}
+						colorScheme={filter === "cards" ? "teal" : "gray"}
+						size={"md"}
+						mr={4}
+						leftIcon={<CheckCircleIcon />}
+						onClick={(e) => {
+							setFilter("cards");
+						}}
+					>
+						Cards
 					</Button>
 				</Flex>
 			</Stack>
@@ -96,7 +143,7 @@ export default function Packs() {
 						return (
 							<PackCard
 								key={set.id}
-								price={0.0}
+								price={set.total}
 								name={set.name}
 								imageURL={set.images.logo}
 								tag={set.ptcgoCode}

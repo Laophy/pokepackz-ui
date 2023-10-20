@@ -19,24 +19,6 @@ export default function OpenPackCard({ set, title }) {
 
 	return (
 		<Container as={Stack} maxW={"100%"}>
-			<Divider />
-			<Stack>
-				<Flex alignItems={"center"} justifyContent={"space-between"} w={"100%"}>
-					<Link to={"/packs"}>
-						<Button
-							variant={"ghost"}
-							colorScheme={"teal"}
-							size={"md"}
-							leftIcon={<ArrowBackIcon />}
-						>
-							{"Back"}
-						</Button>
-					</Link>
-					<Button variant={"ghost"} colorScheme={"teal"} size={"md"}>
-						$0.00
-					</Button>
-				</Flex>
-			</Stack>
 			<Stack direction={{ base: "column", md: "row" }}>
 				<Flex p={8} flex={1} align={"center"} justify={"space-between"}>
 					<Stack spacing={6} w={"full"} maxW={"lg"}>
