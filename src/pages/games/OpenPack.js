@@ -44,7 +44,8 @@ export default function OpenPack({ title }) {
 				.then((response) => response.json())
 				.then((data) => {
 					const sorted = data.message.data.sort(
-						(a, b) => b.cardmarket.prices.avg30 - a.cardmarket.prices.avg30
+						(a, b) =>
+							b?.cardmarket?.prices?.avg30 - a?.cardmarket?.prices?.avg30
 					);
 					setCards(sorted);
 				})
@@ -177,11 +178,11 @@ export default function OpenPack({ title }) {
 					cards?.map((card) => {
 						return (
 							<RewardCard
-								key={card.id}
-								price={card.cardmarket.prices.avg30}
-								rarity={card.rarity}
-								name={card.name}
-								imageURL={card.images.small}
+								key={card?.id}
+								price={card?.cardmarket?.prices?.avg30}
+								rarity={card?.rarity}
+								name={card?.name}
+								imageURL={card?.images?.small}
 								card={card}
 							/>
 						);

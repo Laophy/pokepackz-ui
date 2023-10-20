@@ -55,14 +55,24 @@ export default function RewardCard({ card, imageURL, price, chance, name }) {
 					/>
 				</Box>
 				<Stack pt={10} align={"center"}>
-					<Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
+					<Box
+						fontSize="md"
+						fontWeight="semibold"
+						as="h4"
+						lineHeight="tight"
+						isTruncated
+					>
 						{name}
-					</Heading>
-					<Stack direction={"row"} align={"center"}>
-						<Text fontWeight={800} fontSize={"xl"}>
-							${price}
-						</Text>
-					</Stack>
+					</Box>
+					<Box
+						fontSize="md"
+						fontWeight="400"
+						as="h3"
+						lineHeight="tight"
+						isTruncated
+					>
+						${price}
+					</Box>
 					{/* <Text color={"gray.500"} fontSize={"sm"} textTransform={"uppercase"}>
 						{chance}%
 					</Text> */}

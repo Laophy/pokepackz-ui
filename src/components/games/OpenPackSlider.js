@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Stack, Text, Image } from "@chakra-ui/react";
+import { Stack, Text, Image, CircularProgress } from "@chakra-ui/react";
 import { ChevronUpIcon } from "@chakra-ui/icons";
 
 export default function OpenPackSlider({ set, cards, startSlide }) {
@@ -29,6 +29,7 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 				justifyContent={"center"}
 				flexDirection={"row"}
 				m={1}
+				transition={`${Math.floor(Math.random() * 2) + 1}s all ease-in`}
 			>
 				<Stack
 					alignItems={"center"}
@@ -37,22 +38,33 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 					m={1}
 					ref={sliderContainer}
 					transform={`translateX(${sliderState}px)`}
-					transition={"1s all ease-out"}
+					transition={`${Math.floor(Math.random() * 2) + 1}s all ease-out`}
 				>
-					{cards &&
-						cards
-							.slice(14)
-							.map((card) => (
-								<Image
-									rounded={"lg"}
-									height={"100%"}
-									width={150}
-									objectFit={"contain"}
-									src={card?.images?.large}
-									alt={card?.name}
-									opacity={1}
-								/>
-							))}
+					{cards.length > 0 ? (
+						cards.map((card) => (
+							<Image
+								rounded={"lg"}
+								height={"100%"}
+								width={150}
+								objectFit={"contain"}
+								src={card?.images?.large}
+								alt={card?.name}
+								opacity={1}
+								transition={"0.2s all ease-out"}
+								_hover={{
+									transform: "scale(1.1)",
+									transition: "0.2s all ease-in",
+								}}
+							/>
+						))
+					) : (
+						<CircularProgress
+							isIndeterminate
+							color="teal.300"
+							objectFit="contain"
+							maxW={{ base: "100%" }}
+						/>
+					)}
 				</Stack>
 			</Stack>
 			<ChevronUpIcon />
