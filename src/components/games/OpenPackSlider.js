@@ -7,6 +7,34 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 	const [sliderState, setSliderState] = useState(0);
 
 	useEffect(() => {
+		const requestFreePack = async () => {
+			let openPackResponse;
+			try {
+				const res = await fetch(
+					`${process.env.REACT_APP_API_ENDPOINT}/api/packs/open`,
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							set: set,
+							tryFree: true,
+						}),
+					}
+				);
+				openPackResponse = await res.json();
+
+				if (openPackResponse) {
+					console.log(openPackResponse);
+				}
+			} catch (e) {
+				console.warn(e.message);
+			}
+		};
+
+		requestFreePack();
+
 		const handleRandomScroll = () => {
 			const scrollableDiv = sliderContainer.current;
 
