@@ -61,7 +61,7 @@ export default function OpenPack({ title }) {
 		} catch (error) {
 			console.warn(error);
 		}
-	}, []);
+	}, [packId]);
 
 	return (
 		<Container as={Stack} maxW={"6xl"}>
