@@ -40,7 +40,7 @@ export default function OpenPack({ title }) {
 
 	useEffect(() => {
 		try {
-			fetch(`${process.env.REACT_APP_API_ENDPOINT}/pokemon/cards/${packId}`)
+			fetch(`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/cards/${packId}`)
 				.then((response) => response.json())
 				.then((data) => {
 					const sorted = data.message.data.sort(
@@ -55,7 +55,7 @@ export default function OpenPack({ title }) {
 		}
 
 		try {
-			fetch(`${process.env.REACT_APP_API_ENDPOINT}/pokemon/sets/${packId}`)
+			fetch(`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/sets/${packId}`)
 				.then((response) => response.json())
 				.then((data) => setSet(data.message.data));
 		} catch (error) {

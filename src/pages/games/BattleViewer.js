@@ -48,45 +48,6 @@ export default function BattleViewer() {
 	const { battleURL } = useParams();
 	const toast = useToast();
 
-	// const addPlayerToBattle = (event) => {
-	// 	try {
-	// 		// Battle objects copy
-	// 		let battleCopy = playerObjects;
-	// 		const alreadyJoined = battleCopy.find((x) => x?.user?.uid === user.uid);
-
-	// 		if (!alreadyJoined) {
-	// 			const battleID = +event.target.value; // Battle id of the button clicked (position)
-	// 			let newPlayer = battleCopy.find((x) => x.battleID === battleID); // Objects of that location
-	// 			newPlayer.user = user; // Set the user object to current user
-
-	// 			setPlayerObjects(battleCopy);
-	// 			toast({
-	// 				title: "Success",
-	// 				description: `You have joined the battle`,
-	// 				status: "success",
-	// 				duration: 3000,
-	// 				isClosable: true,
-	// 			});
-	// 		} else {
-	// 			toast({
-	// 				title: "Error",
-	// 				description: `You already joined the battle`,
-	// 				status: "error",
-	// 				duration: 3000,
-	// 				isClosable: true,
-	// 			});
-	// 		}
-	// 	} catch (e) {
-	// 		toast({
-	// 			title: "Error",
-	// 			description: `${e.message}`,
-	// 			status: "error",
-	// 			duration: 3000,
-	// 			isClosable: true,
-	// 		});
-	// 	}
-	// };
-
 	return (
 		<Container as={Stack} maxW={"100%"}>
 			<Divider />

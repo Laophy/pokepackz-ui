@@ -31,7 +31,7 @@ export default function Packs() {
 
 	useEffect(() => {
 		try {
-			fetch(`${process.env.REACT_APP_API_ENDPOINT}/pokemon/sets`)
+			fetch(`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/sets`)
 				.then((response) => response.json())
 				.then((data) => {
 					setSets(data.message.data.reverse());
