@@ -4,8 +4,6 @@ import {
 	FormControl,
 	FormLabel,
 	Input,
-	Checkbox,
-	Highlight,
 	Stack,
 	Center,
 	Button,
@@ -23,11 +21,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useState } from "react";
 import { loginUser } from "../../redux/userSlice";
-import {
-	signInWithEmailAndPassword,
-	GoogleAuthProvider,
-	signInWithPopup,
-} from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 export default function Register() {
 	const [username, setUsername] = useState("");

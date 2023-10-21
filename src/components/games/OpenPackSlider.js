@@ -7,42 +7,50 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 	const [sliderState, setSliderState] = useState(0);
 
 	useEffect(() => {
-		const scrollTo =
-			Math.floor(Math.random() * sliderContainer.current.scrollWidth) + 0;
-		setSliderState(scrollTo);
-		console.log(scrollTo);
+		const handleRandomScroll = () => {
+			const scrollableDiv = sliderContainer.current;
+
+			if (scrollableDiv) {
+				// Calculate a random position within the scrollable content
+				const maxScrollLeft =
+					scrollableDiv.scrollWidth - scrollableDiv.clientWidth;
+				const randomScrollLeft = Math.floor(Math.random() * maxScrollLeft) + 0;
+
+				// Set the scroll position to the random value on the x-axis
+				scrollableDiv.scrollLeft = randomScrollLeft;
+
+				//console.log(`max: ${maxScrollLeft} picked: ${randomScrollLeft}`);
+			}
+		};
+		handleRandomScroll();
 	}, [startSlide]);
 
 	return (
 		<Stack
-			direction={{ base: "column" }}
-			justifyContent="center"
-			alignItems="center"
+			flexDirection={"column"}
+			justifyContent={"center"}
+			alignItems={"center"}
 			overflow={"hidden"}
 			p="5"
-			boxShadow="lg"
 			m="1"
-			borderRadius="sm"
 		>
 			<Stack
-				alignItems={"center"}
-				justifyContent={"center"}
+				alignItems={"flex-start"}
+				justifyContent={"flex-start"}
 				flexDirection={"row"}
+				width={"100%"}
+				minHeight={"200px"}
 				m={1}
-				transition={`${Math.floor(Math.random() * 2) + 1}s all ease-in`}
+				p={2}
+				ref={sliderContainer}
+				overflow={"hidden"}
+				scrollBehavior={"smooth"}
 			>
-				<Stack
-					alignItems={"center"}
-					justifyContent={"center"}
-					flexDirection={"row"}
-					m={1}
-					ref={sliderContainer}
-					transform={`translateX(${sliderState}px)`}
-					transition={`${Math.floor(Math.random() * 2) + 1}s all ease-out`}
-				>
-					{cards.length > 0 ? (
-						cards.map((card) => (
+				<Stack flexDirection={"row"}>
+					{cards &&
+						cards.map((card, index) => (
 							<Image
+								key={`${card?.name}_${index}`}
 								rounded={"lg"}
 								height={"100%"}
 								width={150}
@@ -56,19 +64,10 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 									transition: "0.2s all ease-in",
 								}}
 							/>
-						))
-					) : (
-						<CircularProgress
-							isIndeterminate
-							color="teal.300"
-							objectFit="contain"
-							maxW={{ base: "100%" }}
-						/>
-					)}
+						))}
 				</Stack>
 			</Stack>
 			<ChevronUpIcon />
-			<Text>$0.00</Text>
 		</Stack>
 	);
 }

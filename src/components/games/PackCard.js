@@ -9,37 +9,37 @@ import {
 	chakra,
 	Tooltip,
 } from "@chakra-ui/react";
-import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
+//import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
 import { FiPackage } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-function Rating({ rating, numReviews }) {
-	return (
-		<Box display="flex" alignItems="center">
-			{Array(5)
-				.fill("")
-				.map((_, i) => {
-					const roundedRating = Math.round(rating * 2) / 2;
-					if (roundedRating - i >= 1) {
-						return (
-							<BsStarFill
-								key={i}
-								style={{ marginLeft: "1" }}
-								color={i < rating ? "teal.500" : "gray.300"}
-							/>
-						);
-					}
-					if (roundedRating - i === 0.5) {
-						return <BsStarHalf key={i} style={{ marginLeft: "1" }} />;
-					}
-					return <BsStar key={i} style={{ marginLeft: "1" }} />;
-				})}
-			<Box as="span" ml="2" color="gray.600" fontSize="sm">
-				{numReviews} review{numReviews > 1 && "s"}
-			</Box>
-		</Box>
-	);
-}
+// function Rating({ rating, numReviews }) {
+// 	return (
+// 		<Box display="flex" alignItems="center">
+// 			{Array(5)
+// 				.fill("")
+// 				.map((_, i) => {
+// 					const roundedRating = Math.round(rating * 2) / 2;
+// 					if (roundedRating - i >= 1) {
+// 						return (
+// 							<BsStarFill
+// 								key={i}
+// 								style={{ marginLeft: "1" }}
+// 								color={i < rating ? "teal.500" : "gray.300"}
+// 							/>
+// 						);
+// 					}
+// 					if (roundedRating - i === 0.5) {
+// 						return <BsStarHalf key={i} style={{ marginLeft: "1" }} />;
+// 					}
+// 					return <BsStar key={i} style={{ marginLeft: "1" }} />;
+// 				})}
+// 			<Box as="span" ml="2" color="gray.600" fontSize="sm">
+// 				{numReviews} review{numReviews > 1 && "s"}
+// 			</Box>
+// 		</Box>
+// 	);
+// }
 
 export default function PackCard({
 	price,
@@ -84,6 +84,7 @@ export default function PackCard({
 					w={250}
 					h={150}
 					m={1}
+					p={2}
 					mr={"auto"}
 					ml={"auto"}
 					objectFit={"contain"}
@@ -130,9 +131,9 @@ export default function PackCard({
 							fontSize={"1.2em"}
 						>
 							<Link to={`/packs/${data.packId}/${data.name}`}>
-								<chakra.a display={"flex"}>
+								<chakra.p display={"flex"}>
 									<Icon as={FiPackage} h={7} w={7} alignSelf={"center"} />
-								</chakra.a>
+								</chakra.p>
 							</Link>
 						</Tooltip>
 					</Flex>

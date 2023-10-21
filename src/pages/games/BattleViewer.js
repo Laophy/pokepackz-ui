@@ -67,7 +67,7 @@ export default function BattleViewer() {
 						{`${currentRound}/${rounds}`}
 					</Button>
 					<Button variant={"ghost"} colorScheme={"teal"} size={"md"}>
-						{`Cost ₤${cost.toFixed(2)}`}
+						{`Cost $${cost.toFixed(2)}`}
 					</Button>
 				</Flex>
 			</Stack>
@@ -124,14 +124,10 @@ export default function BattleViewer() {
 				height={500}
 			>
 				<ChevronRightIcon />
-				<Stack
-					justifyContent={"space-around"}
-					direction={{ base: "row" }}
-					width={"100%"}
-				>
-					{playerObjects.map((player) => {
+				<Stack justifyContent={"space-around"} direction={"row"} width={"100%"}>
+					{playerObjects.map((player, index) => {
 						return (
-							<Box p={2}>
+							<Box p={2} key={index}>
 								<Stack
 									alignItems={"center"}
 									justifyContent={"center"}
@@ -140,54 +136,69 @@ export default function BattleViewer() {
 									spacing={2}
 								>
 									<Image
-										rounded={"lg"}
-										height={32}
-										width={32}
-										objectFit={"contain"}
-										src={`https://images.pokemontcg.io/base1/${
-											Math.floor(Math.random() * 102) + 1
+										objectFit={"cover"}
+										height={"100%"}
+										width={"100%"}
+										maxHeight={"100%"}
+										maxWidth={"200px"}
+										minHeight={"100px"}
+										minWidth={"70px"}
+										src={`https://images.pokemontcg.io/sv3pt5/${
+											Math.floor(Math.random() * 165) + 1
 										}_hires.png`}
-										alt="#"
+										alt="Pokemon Card Reward"
 									/>
 									<Image
-										rounded={"lg"}
-										height={32}
-										width={32}
-										objectFit={"contain"}
-										src={`https://images.pokemontcg.io/base1/${
-											Math.floor(Math.random() * 102) + 1
+										objectFit={"cover"}
+										height={"100%"}
+										width={"100%"}
+										maxHeight={"100%"}
+										maxWidth={"200px"}
+										minHeight={"100px"}
+										minWidth={"70px"}
+										src={`https://images.pokemontcg.io/sv3pt5/${
+											Math.floor(Math.random() * 165) + 1
 										}_hires.png`}
-										alt="#"
+										alt="Pokemon Card Reward"
 									/>
 									<Image
-										rounded={"lg"}
-										height={32}
-										width={32}
-										objectFit={"contain"}
-										src={`https://images.pokemontcg.io/base1/${
-											Math.floor(Math.random() * 102) + 1
+										objectFit={"cover"}
+										height={"100%"}
+										width={"100%"}
+										maxHeight={"100%"}
+										maxWidth={"200px"}
+										minHeight={"100px"}
+										minWidth={"70px"}
+										src={`https://images.pokemontcg.io/sv3pt5/${
+											Math.floor(Math.random() * 165) + 1
 										}_hires.png`}
-										alt="#"
+										alt="Pokemon Card Reward"
 									/>
 									<Image
-										rounded={"lg"}
-										height={32}
-										width={32}
-										objectFit={"contain"}
-										src={`https://images.pokemontcg.io/base1/${
-											Math.floor(Math.random() * 102) + 1
+										objectFit={"cover"}
+										height={"100%"}
+										width={"100%"}
+										maxHeight={"100%"}
+										maxWidth={"200px"}
+										minHeight={"100px"}
+										minWidth={"70px"}
+										src={`https://images.pokemontcg.io/sv3pt5/${
+											Math.floor(Math.random() * 165) + 1
 										}_hires.png`}
-										alt="#"
+										alt="Pokemon Card Reward"
 									/>
 									<Image
-										rounded={"lg"}
-										height={32}
-										width={32}
-										objectFit={"contain"}
-										src={`https://images.pokemontcg.io/base1/${
-											Math.floor(Math.random() * 102) + 1
+										objectFit={"cover"}
+										height={"100%"}
+										width={"100%"}
+										maxHeight={"100%"}
+										maxWidth={"200px"}
+										minHeight={"100px"}
+										minWidth={"70px"}
+										src={`https://images.pokemontcg.io/sv3pt5/${
+											Math.floor(Math.random() * 165) + 1
 										}_hires.png`}
-										alt="#"
+										alt="Pokemon Card Reward"
 									/>
 								</Stack>
 							</Box>
@@ -200,9 +211,14 @@ export default function BattleViewer() {
 				direction={{ base: "column", md: "row", sm: "column" }}
 				spacing={2}
 			>
-				{playerObjects.map((player) => {
+				{playerObjects.map((player, index) => {
 					return (
-						<Box w={"full"} h={"full"} p={2}>
+						<Box
+							w={"full"}
+							h={"full"}
+							p={2}
+							key={`${player.battleID}_${index}`}
+						>
 							<Stack alignItems={"center"} justifyContent={"center"}>
 								<Stack
 									alignItems={"center"}
@@ -246,8 +262,8 @@ export default function BattleViewer() {
 										price={5}
 										rarity={"common"}
 										name={"Pokemon Card"}
-										imageURL={`https://images.pokemontcg.io/base1/${
-											Math.floor(Math.random() * 102) + 1
+										imageURL={`https://images.pokemontcg.io/sv3pt5/${
+											Math.floor(Math.random() * 165) + 1
 										}_hires.png`}
 										chance={98}
 									/>

@@ -2,7 +2,6 @@ import {
 	Avatar,
 	Flex,
 	Text,
-	Image,
 	Container,
 	SimpleGrid,
 	Menu,

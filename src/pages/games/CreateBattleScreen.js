@@ -1,14 +1,12 @@
 import {
 	Flex,
 	Container,
-	SimpleGrid,
 	Button,
 	Stack,
 	useToast,
 	Heading,
 	Text,
 	CardBody,
-	CardFooter,
 	Card,
 } from "@chakra-ui/react";
 import { useState } from "react";

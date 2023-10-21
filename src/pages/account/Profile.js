@@ -2,7 +2,6 @@ import {
 	Text,
 	Divider,
 	Stack,
-	Avatar,
 	Card,
 	CardBody,
 	Heading,

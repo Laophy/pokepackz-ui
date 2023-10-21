@@ -2,7 +2,6 @@ import { Search2Icon } from "@chakra-ui/icons";
 import {
 	Flex,
 	Container,
-	SimpleGrid,
 	Button,
 	InputLeftElement,
 	InputGroup,

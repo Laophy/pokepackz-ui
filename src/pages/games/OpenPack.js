@@ -1,13 +1,7 @@
-import {
-	ArrowBackIcon,
-	ArrowDownIcon,
-	CheckCircleIcon,
-	UpDownIcon,
-} from "@chakra-ui/icons";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
 	Flex,
 	Container,
-	SimpleGrid,
 	Button,
 	Stack,
 	Heading,
@@ -16,19 +10,17 @@ import {
 	Image,
 	Text,
 	useBreakpointValue,
+	useToast,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import GameCard from "../../components/games/PackCard";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import OpenPackCard from "../../components/games/OpenPackCard";
 import RewardCard from "../../components/games/RewardCard";
 import OpenPackSlider from "../../components/games/OpenPackSlider";
 
 export default function OpenPack({ title }) {
 	const { packId } = useParams();
 
-	const [filter, setFilter] = useState("featured");
 	const [startSlide, setStartSlide] = useState(false);
 
 	const [loadingCards, setLoadingCards] = useState(true);
@@ -37,30 +29,63 @@ export default function OpenPack({ title }) {
 
 	// Grabbing a user from global storage via redux
 	const user = useSelector((state) => state.data.user.user);
+	const toast = useToast();
 
 	useEffect(() => {
-		try {
-			fetch(`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/cards/${packId}`)
-				.then((response) => response.json())
-				.then((data) => {
-					const sorted = data.message.data.sort(
-						(a, b) =>
-							b?.cardmarket?.prices?.avg30 - a?.cardmarket?.prices?.avg30
-					);
-					setCards(sorted);
-				})
-				.then(() => setLoadingCards(false));
-		} catch (error) {
-			console.warn(error);
-		}
+		const getPokemonCards = async () => {
+			let cards;
 
-		try {
-			fetch(`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/sets/${packId}`)
-				.then((response) => response.json())
-				.then((data) => setSet(data.message.data));
-		} catch (error) {
-			console.warn(error);
-		}
+			try {
+				const res = await fetch(
+					`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/cards/${packId}`
+				);
+				cards = await res.json();
+			} catch (e) {
+				toast({
+					title: "Network Error",
+					description: `${e.message}`,
+					status: "error",
+					duration: 3000,
+					isClosable: true,
+				});
+			}
+
+			if (cards) {
+				// Sort the cards by price in reward view
+				const cardsSortedByPrice = cards.data.sort(
+					(a, b) => b?.cardmarket?.prices?.avg30 - a?.cardmarket?.prices?.avg30
+				);
+
+				// Set current reward cards
+				setCards(cardsSortedByPrice);
+				setLoadingCards(false);
+			}
+		};
+		getPokemonCards();
+
+		const getPokemonSet = async () => {
+			let set;
+
+			try {
+				const res = await fetch(
+					`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/sets/${packId}`
+				);
+				set = await res.json();
+			} catch (e) {
+				toast({
+					title: "Network Error",
+					description: `${e.message}`,
+					status: "error",
+					duration: 3000,
+					isClosable: true,
+				});
+			}
+
+			// Update current set state
+			setSet(set.data);
+		};
+
+		getPokemonSet();
 	}, [packId]);
 
 	return (
@@ -83,7 +108,7 @@ export default function OpenPack({ title }) {
 					</Button>
 				</Flex>
 			</Stack>
-
+			<OpenPackSlider set={set} cards={cards} startSlide={startSlide} />
 			<Stack direction={{ base: "column", md: "row" }}>
 				<Flex p={8} flex={1} align={"center"} justify={"space-between"}>
 					<Stack spacing={6} w={"full"} maxW={"lg"}>
@@ -110,7 +135,9 @@ export default function OpenPack({ title }) {
 							</Text>{" "}
 						</Heading>
 						<Text fontSize={{ base: "md", lg: "lg" }} color={"gray.500"}>
-							{`There is a total of ${set?.printedTotal} printed cards in this set. ${set?.name} set was released on ${set?.releaseDate} and is in the ${set?.series} series.`}
+							{set?.name
+								? `There is a total of ${set?.printedTotal} printed cards in this set. ${set?.name} set was released on ${set?.releaseDate} and is in the ${set?.series} series.`
+								: "Loading..."}
 						</Text>
 						<Stack direction={{ base: "column", md: "row" }} spacing={4}>
 							<Button
@@ -155,7 +182,6 @@ export default function OpenPack({ title }) {
 					)}
 				</Flex>
 			</Stack>
-			<OpenPackSlider set={set} cards={cards} startSlide={startSlide} />
 			<Heading size="lg">In This Pack</Heading>
 			<Stack
 				alignItems={"center"}

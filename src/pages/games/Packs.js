@@ -1,47 +1,43 @@
-import {
-	ArrowDownIcon,
-	CalendarIcon,
-	CheckCircleIcon,
-	Search2Icon,
-	UpDownIcon,
-} from "@chakra-ui/icons";
-import {
-	Flex,
-	Container,
-	SimpleGrid,
-	Button,
-	Stack,
-	CircularProgress,
-	InputLeftElement,
-	Heading,
-	InputGroup,
-	Input,
-} from "@chakra-ui/react";
+import { Container, Stack, CircularProgress, useToast } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import PackCard from "../../components/games/PackCard";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 export default function Packs() {
 	// Grabbing a user from global storage via redux
 	const user = useSelector((state) => state.data.user.user);
+	const toast = useToast();
 
 	const [sets, setSets] = useState([]);
 	const [loadingSets, setLoadingSets] = useState(true);
 
 	useEffect(() => {
-		try {
-			fetch(`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/sets`)
-				.then((response) => response.json())
-				.then((data) => {
-					setSets(data.message.data.reverse());
-				})
-				.then(() => {
-					setLoadingSets(false);
+		const getPokemonSets = async () => {
+			let pokemonSets;
+			try {
+				const res = await fetch(
+					`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/sets`
+				);
+				pokemonSets = await res.json();
+			} catch (e) {
+				toast({
+					title: "Network Error",
+					description: `${e.message}`,
+					status: "error",
+					duration: 3000,
+					isClosable: true,
 				});
-		} catch (error) {
-			console.warn(error);
-		}
+			}
+
+			if (pokemonSets) {
+				setSets(pokemonSets?.data.reverse());
+			}
+
+			// Set our sets with the data returned
+			setLoadingSets(false);
+		};
+
+		getPokemonSets();
 	}, []);
 
 	return (

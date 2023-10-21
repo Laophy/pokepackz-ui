@@ -62,47 +62,29 @@ export default function Footer() {
 						</Box>
 						<Text fontSize={"sm"}>Open mystery packs or battles others!</Text>
 						<Stack direction={"row"} spacing={6}>
-							<SocialButton label={"Twitter"} href={"#"}>
+							<SocialButton label={"Twitter"}>
 								<FaTwitter />
 							</SocialButton>
-							<SocialButton label={"Instagram"} href={"#"}>
+							<SocialButton label={"Instagram"}>
 								<FaInstagram />
 							</SocialButton>
 						</Stack>
 					</Stack>
 					<Stack align={"flex-start"}>
 						<ListHeader>Games</ListHeader>
-						<Link to={"/packs"}>
-							<Box as="a">Packs</Box>
-						</Link>
-						<Link to={"/battles"}>
-							<Box as="a">Battles</Box>
-						</Link>
-						<Link to={"/rewards"}>
-							<Box as="a">Rewards</Box>
-						</Link>
+						<Link to={"/packs"}>Packs</Link>
+						<Link to={"/battles"}>Battles</Link>
+						<Link to={"/rewards"}>Rewards</Link>
 					</Stack>
 					<Stack align={"flex-start"}>
 						<ListHeader>Community</ListHeader>
-						<Box as="a" href={"#"}>
-							Twitter
-						</Box>
-						<Box as="a" href={"#"}>
-							Instagram
-						</Box>
+						<Box>Twitter</Box>
+						<Box>Instagram</Box>
 					</Stack>
 					<Stack align={"flex-start"}>
 						<ListHeader>Legal</ListHeader>
-						<Link to={"/account/privacypolicy"}>
-							<Box as="a" href={"#"}>
-								Privacy Policy
-							</Box>
-						</Link>
-						<Link to={"/account/terms"}>
-							<Box as="a" href={"#"}>
-								Terms of Service
-							</Box>
-						</Link>
+						<Link to={"/account/privacypolicy"}>Privacy Policy</Link>
+						<Link to={"/account/terms"}>Terms of Service</Link>
 					</Stack>
 				</SimpleGrid>
 				<Box

@@ -9,14 +9,13 @@ import {
 	Center,
 	Button,
 	Heading,
-	Highlight,
 	Text,
 	useColorModeValue,
 	AbsoluteCenter,
 	Divider,
 	useToast,
 } from "@chakra-ui/react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";

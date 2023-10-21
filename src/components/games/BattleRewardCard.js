@@ -61,7 +61,7 @@ export default function BattleRewardCard({
 						width={282}
 						objectFit={"contain"}
 						src={imageURL}
-						alt="#"
+						alt="Pokemon Card"
 					/>
 				</Box>
 				<Stack pt={10} align={"center"}>
