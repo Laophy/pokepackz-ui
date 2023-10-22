@@ -37,7 +37,7 @@ export default function OpenPack({ title }) {
 
 			try {
 				const res = await fetch(
-					`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/cards/${packId}`
+					`${process.env.REACT_APP_API_ENDPOINT}/api/pokemon/sets/${packId}/cards`
 				);
 				cards = await res.json();
 			} catch (e) {
@@ -52,7 +52,7 @@ export default function OpenPack({ title }) {
 
 			if (cards) {
 				// Sort the cards by price in reward view
-				const cardsSortedByPrice = cards.data.sort(
+				const cardsSortedByPrice = cards?.data?.sort(
 					(a, b) => b?.cardmarket?.prices?.avg30 - a?.cardmarket?.prices?.avg30
 				);
 
@@ -136,7 +136,13 @@ export default function OpenPack({ title }) {
 						</Heading>
 						<Text fontSize={{ base: "md", lg: "lg" }} color={"gray.500"}>
 							{set?.name
-								? `There is a total of ${set?.printedTotal} printed cards in this set. ${set?.name} set was released on ${set?.releaseDate} and is in the ${set?.series} series.`
+								? `There is a total of ${
+										set?.printedTotal
+								  } printed cards in this set. ${
+										set?.name
+								  } set was released on ${new Date(
+										set?.releaseDate
+								  ).toDateString()} and is in the ${set?.series} series.`
 								: "Loading..."}
 						</Text>
 						<Stack direction={{ base: "column", md: "row" }} spacing={4}>
