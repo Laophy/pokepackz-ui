@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Stack, Text, Image, CircularProgress } from "@chakra-ui/react";
+import React, { useEffect, useRef } from "react";
+import { Stack, Image, useToast } from "@chakra-ui/react";
 import { ChevronUpIcon } from "@chakra-ui/icons";
 
 export default function OpenPackSlider({ set, cards, startSlide }) {
 	const sliderContainer = useRef(null);
-	const [sliderState, setSliderState] = useState(0);
+	const toast = useToast();
 
 	useEffect(() => {
 		const requestFreePack = async () => {
@@ -27,6 +27,14 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 
 				if (openPackResponse) {
 					console.log(openPackResponse);
+					toast({
+						title: "Success",
+						description: `You have won a ${openPackResponse?.reward?.card?.name}`,
+						status: "success",
+						duration: 2000,
+						isClosable: true,
+					});
+					handleRandomScroll();
 				}
 			} catch (e) {
 				console.warn(e.message);
@@ -50,7 +58,6 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 				//console.log(`max: ${maxScrollLeft} picked: ${randomScrollLeft}`);
 			}
 		};
-		handleRandomScroll();
 	}, [startSlide]);
 
 	return (
