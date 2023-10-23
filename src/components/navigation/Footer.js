@@ -8,7 +8,7 @@ import {
 	VisuallyHidden,
 	useColorModeValue,
 } from "@chakra-ui/react";
-import { FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaDiscord, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const SocialButton = ({ children, label, href }) => {
@@ -65,9 +65,15 @@ export default function Footer() {
 							<SocialButton label={"Twitter"}>
 								<FaTwitter />
 							</SocialButton>
-							<SocialButton label={"Instagram"}>
-								<FaInstagram />
-							</SocialButton>
+							<Link
+								to={"https://discord.gg/txFjcr4FfV"}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<SocialButton label={"Discord"}>
+									<FaDiscord />
+								</SocialButton>
+							</Link>
 						</Stack>
 					</Stack>
 					<Stack align={"flex-start"}>
@@ -79,7 +85,13 @@ export default function Footer() {
 					<Stack align={"flex-start"}>
 						<ListHeader>Community</ListHeader>
 						<Box>Twitter</Box>
-						<Box>Instagram</Box>
+						<Link
+							to={"https://discord.gg/txFjcr4FfV"}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Discord
+						</Link>
 					</Stack>
 					<Stack align={"flex-start"}>
 						<ListHeader>Legal</ListHeader>

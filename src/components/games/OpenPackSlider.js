@@ -85,11 +85,17 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 				const containerWidth = cardsRef.current.clientWidth;
 				let translateTo = -cardLeft + containerWidth / 2 - cardWidth / 2;
 
+				const min = -75;
+				const max = 75;
+				const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
 				// Apply smooth scrolling with CSS transitions on the individual cards
-				cardsRef.current.style.transition = "transform 8s"; // Linear easing for a smooth transition
+				cardsRef.current.style.transition = "transform 10s"; // Linear easing for a smooth transition
 				cardsRef.current.style.transitionTimingFunction =
-					"cubic-bezier(0,1,0.57,1)";
-				cardsRef.current.style.transform = `translateX(${translateTo}px)`;
+					"cubic-bezier(0,1,0.80,1.005)";
+				cardsRef.current.style.transform = `translateX(${
+					translateTo + randomNumber
+				}px)`;
 
 				// Set the selected card and reset after a delay
 				setSelectedCard(targetCard);
@@ -101,7 +107,7 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 					// Reset the cards to their original position
 					// cardsRef.current.style.transition = "transform 0s ease-in-out"; // Adjust the duration and easing
 					// cardsRef.current.style.transform = "translateX(0)";
-				}, 8000); // Reset after 0.5 seconds (should match the transition duration)
+				}, 10000); // Reset after 0.5 seconds (should match the transition duration)
 			}
 		}
 
@@ -158,7 +164,7 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 					justifyContent={"flex-start"}
 					flexDirection={"row"}
 					ref={cardsRef}
-					transition={"transform 8s ease-in-out"}
+					transition={"transform 10s ease-in-out"}
 					width={"100%"}
 					m={2}
 				>
@@ -182,7 +188,7 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 										? 1
 										: 0.4
 								}
-								transition={"opacity 0.3s"}
+								transition={"opacity 0.3s ease-in"}
 							/>
 						))}
 				</Stack>
