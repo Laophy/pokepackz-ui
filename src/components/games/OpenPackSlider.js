@@ -11,23 +11,23 @@ import { ChevronUpIcon } from "@chakra-ui/icons";
 export default function OpenPackSlider({ set, cards, startSlide }) {
 	const [randomCards, setRandomCards] = useState([]);
 	const [reward, setReward] = useState({});
-	const [loading, setLoading] = useState(true);
+	const [spinning, setSpinng] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [selectedCard, setSelectedCard] = useState(null);
 
 	const cardsRef = useRef(null);
 	const toast = useToast();
 
-	// useEffect(() => {
-	// 	setupDeck(null);
-	// 	console.log(randomCards);
-	// }, []);
+	useEffect(() => {
+		setupDeck(null);
+	}, []);
 
 	useEffect(() => {
-		if (!loading) {
+		if (!loading && !spinning) {
+			cardsRef.current.style.transition = "transform 0.3s"; // Linear easing for a smooth transition
+			cardsRef.current.style.transform = "translateX(0)";
+
 			requestFreePack();
-		} else {
-			setupDeck(null);
-			setLoading(false);
 		}
 	}, [startSlide]);
 
@@ -60,15 +60,9 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 					openPackResponse?.reward?.card?.id,
 					newReward
 				);
-				toast({
-					title: "Success",
-					description: `You have won a ${openPackResponse?.reward?.card?.name}`,
-					status: "success",
-					duration: 2000,
-					isClosable: true,
-				});
 				if (scrollFinish) {
 					setReward(newReward);
+					setLoading(false);
 				}
 			}
 		} catch (e) {
@@ -84,6 +78,7 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 
 		if (cardsRef) {
 			const targetCard = cardsRef.current.children[cardPosition];
+
 			if (targetCard) {
 				const cardLeft = targetCard.offsetLeft;
 				const cardWidth = targetCard.clientWidth;
@@ -91,20 +86,22 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 				let translateTo = -cardLeft + containerWidth / 2 - cardWidth / 2;
 
 				// Apply smooth scrolling with CSS transitions on the individual cards
-				cardsRef.current.style.transition = "transform 5s"; // Linear easing for a smooth transition
+				cardsRef.current.style.transition = "transform 8s"; // Linear easing for a smooth transition
 				cardsRef.current.style.transitionTimingFunction =
-					"cubic-bezier(0.5, 3, 4, 5)";
+					"cubic-bezier(0,1,0.57,1)";
 				cardsRef.current.style.transform = `translateX(${translateTo}px)`;
 
 				// Set the selected card and reset after a delay
 				setSelectedCard(targetCard);
+				setSpinng(true);
+
 				setTimeout(() => {
-					setSelectedCard(null);
+					setSpinng(false);
 
 					// Reset the cards to their original position
-					cardsRef.current.style.transition = "transform 1s ease-in-out"; // Adjust the duration and easing
-					cardsRef.current.style.transform = "translateX(0)";
-				}, 7500); // Reset after 0.5 seconds (should match the transition duration)
+					// cardsRef.current.style.transition = "transform 0s ease-in-out"; // Adjust the duration and easing
+					// cardsRef.current.style.transform = "translateX(0)";
+				}, 8000); // Reset after 0.5 seconds (should match the transition duration)
 			}
 		}
 
@@ -161,7 +158,7 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 					justifyContent={"flex-start"}
 					flexDirection={"row"}
 					ref={cardsRef}
-					transition={"transform 5s ease-in-out"}
+					transition={"transform 8s ease-in-out"}
 					width={"100%"}
 					m={2}
 				>
@@ -181,9 +178,11 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 										: "translateX(0)"
 								}
 								opacity={
-									selectedCard === cardsRef.current.children[index] ? 1 : 0.4
+									selectedCard === cardsRef.current.children[index] && !spinning
+										? 1
+										: 0.4
 								}
-								transition={"opacity 5s"}
+								transition={"opacity 0.3s"}
 							/>
 						))}
 				</Stack>
@@ -191,13 +190,13 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 			<ChevronUpIcon />
 
 			{loading ? (
-				<CircularProgress
-					isIndeterminate
-					color="teal.300"
-					objectFit="contain"
-				/>
+				<Text>{"Loading!"}</Text>
 			) : reward && reward?.name ? (
-				<Text>{`${reward?.name} $${reward?.cardmarket?.prices?.avg30}`}</Text>
+				spinning ? (
+					<Text>Spinning!</Text>
+				) : (
+					<Text>{`${reward?.name} $${reward?.cardmarket?.prices?.avg30}`}</Text>
+				)
 			) : (
 				<Text>{"$0.00"}</Text>
 			)}
