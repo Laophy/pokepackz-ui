@@ -65,7 +65,7 @@ function App() {
 							<Route path={"/account/register"} element={<Register />} />
 
 							<Route path={"/packs"} element={<Packs />} />
-							<Route path={"/packs/:packId/:name"} element={<OpenPack />} />
+							<Route path={"/packs/:packId"} element={<OpenPack />} />
 							<Route path={"/battles"} element={<Battles />} />
 							<Route path={"/battles/:battleURL"} element={<BattleViewer />} />
 							<Route
@@ -159,7 +159,7 @@ function App() {
 							<Route path={"/account/register"} element={<Register />} />
 
 							<Route path={"/packs"} element={<Packs />} />
-							<Route path={"/packs/:packId/:name"} element={<OpenPack />} />
+							<Route path={"/packs/:packId"} element={<OpenPack />} />
 
 							<Route path={"/battles"} element={<Battles />} />
 							<Route path={"/battles/:battleURL"} element={<BattleViewer />} />

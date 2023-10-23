@@ -9,20 +9,32 @@ import {
 import { ChevronUpIcon } from "@chakra-ui/icons";
 
 export default function OpenPackSlider({ set, cards, startSlide }) {
+	const [randomCards, setRandomCards] = useState([]);
 	const [reward, setReward] = useState({});
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [selectedCard, setSelectedCard] = useState(null);
 
-	const sliderContainer = useRef(null);
+	const cardsRef = useRef(null);
 	const toast = useToast();
+
+	// useEffect(() => {
+	// 	setupDeck(null);
+	// 	console.log(randomCards);
+	// }, []);
 
 	useEffect(() => {
 		if (!loading) {
 			requestFreePack();
+		} else {
+			setupDeck(null);
+			setLoading(false);
 		}
 	}, [startSlide]);
 
 	const requestFreePack = async () => {
+		// Reset slider
+		cardsRef.current.scrollLeft = 0;
+
 		let openPackResponse;
 		try {
 			setLoading(true);
@@ -42,8 +54,11 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 			openPackResponse = await res.json();
 
 			if (openPackResponse?.reward) {
+				const newReward = openPackResponse?.reward?.card;
+
 				const scrollFinish = handleRandomScroll(
-					openPackResponse?.reward?.card?.id
+					openPackResponse?.reward?.card?.id,
+					newReward
 				);
 				toast({
 					title: "Success",
@@ -53,7 +68,6 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 					isClosable: true,
 				});
 				if (scrollFinish) {
-					const newReward = openPackResponse?.reward?.card;
 					setReward(newReward);
 				}
 			}
@@ -63,47 +77,65 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 		setLoading(false);
 	};
 
-	const handleRandomScroll = (rewardID) => {
-		const scrollableDiv = sliderContainer.current;
-		const cardPosition = cards.findIndex((c) => c?.id === rewardID); // position in card array used in the slider
+	const handleRandomScroll = (rewardID, newReward) => {
+		// Get a random deck first...
+		const newDeck = setupDeck(newReward);
+		const cardPosition = newDeck.findIndex((c) => c?.id === rewardID); // position in card array used in the slider
 
-		if (scrollableDiv) {
-			// Calculate a random position within the scrollable content
-			const maxScrollLeft =
-				scrollableDiv.scrollWidth - scrollableDiv.clientWidth;
-			// const randomScrollLeft = Math.floor(Math.random() * maxScrollLeft) + 0;
-
-			// Set the scroll position to the random value on the x-axis
-			// scrollableDiv.scrollLeft = randomScrollLeft;
-
-			// const cardPosInSlider = scrollableDiv.children[cardPosition];
-			// if (cardPosInSlider) {
-			// 	cardPosInSlider.scrollIntoView({ behavior: "smooth" });
-			// } else {
-			// 	scrollableDiv.scrollLeft = 0;
-			// }
-
-			const targetCard = scrollableDiv.children[cardPosition]; // Index 9 for the 10th card
+		if (cardsRef) {
+			const targetCard = cardsRef.current.children[cardPosition];
 			if (targetCard) {
-				const container = scrollableDiv;
 				const cardLeft = targetCard.offsetLeft;
 				const cardWidth = targetCard.clientWidth;
-				const containerWidth = container.clientWidth;
+				const containerWidth = cardsRef.current.clientWidth;
+				let translateTo = -cardLeft + containerWidth / 2 - cardWidth / 2;
 
-				const scrollTo = cardLeft - containerWidth / 2 + cardWidth / 2;
-				container.scrollLeft = scrollTo - (Math.floor(Math.random() * 150) + 1);
+				// Apply smooth scrolling with CSS transitions on the individual cards
+				cardsRef.current.style.transition = "transform 5s"; // Linear easing for a smooth transition
+				cardsRef.current.style.transitionTimingFunction =
+					"cubic-bezier(0.5, 3, 4, 5)";
+				cardsRef.current.style.transform = `translateX(${translateTo}px)`;
 
 				// Set the selected card and reset after a delay
 				setSelectedCard(targetCard);
 				setTimeout(() => {
 					setSelectedCard(null);
-				}, 3000); // Reset after 3 seconds (adjust as needed)
-			}
 
-			//console.log(`max: ${maxScrollLeft} picked: ${randomScrollLeft}`);
+					// Reset the cards to their original position
+					cardsRef.current.style.transition = "transform 1s ease-in-out"; // Adjust the duration and easing
+					cardsRef.current.style.transform = "translateX(0)";
+				}, 7500); // Reset after 0.5 seconds (should match the transition duration)
+			}
 		}
 
 		return true;
+	};
+
+	const setupDeck = (rewardCard) => {
+		// Generate 15 cards and place the won card in position 10
+		const totalCards = 75;
+		let randomCards = [];
+
+		if (!rewardCard) {
+			for (let i = 0; i < totalCards; i++) {
+				const randomCard = cards[Math.floor(Math.random() * cards.length) + 1];
+				randomCards.push(randomCard);
+			}
+		} else {
+			for (let i = 0; i < totalCards; i++) {
+				const randomCard = cards[Math.floor(Math.random() * cards.length)];
+				if (randomCard?.id !== rewardCard?.id && randomCard !== undefined)
+					randomCards.push(randomCard);
+			}
+
+			// Set the reward card
+			randomCards[65] = rewardCard;
+		}
+
+		setRandomCards(randomCards);
+
+		//console.log(randomCards);
+		return randomCards;
 	};
 
 	return (
@@ -111,7 +143,6 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 			flexDirection={"column"}
 			justifyContent={"center"}
 			alignItems={"center"}
-			overflow={"hidden"}
 			p="5"
 			m="1"
 		>
@@ -121,52 +152,55 @@ export default function OpenPackSlider({ set, cards, startSlide }) {
 				flexDirection={"row"}
 				width={"100%"}
 				minHeight={"200px"}
+				overflow={"hidden"}
 				m={1}
 				p={2}
 			>
 				<Stack
 					alignItems={"center"}
-					justifyContent={"space-between"}
+					justifyContent={"flex-start"}
 					flexDirection={"row"}
-					ref={sliderContainer}
-					overflow={"hidden"}
-					scrollBehavior={"smooth"}
+					ref={cardsRef}
+					transition={"transform 5s ease-in-out"}
+					width={"100%"}
 					m={2}
 				>
-					{cards &&
-						cards.map((card, index) => (
+					{randomCards &&
+						randomCards.map((card, index) => (
 							<Image
-								key={`${card?.name}_${index}`}
+								key={index}
 								rounded={"lg"}
 								height={"100%"}
 								width={150}
 								objectFit={"contain"}
 								src={card?.images?.large}
 								alt={card?.name}
-								opacity={
-									selectedCard === sliderContainer.current.children[index]
-										? 1
-										: 0.4
+								transform={
+									selectedCard === cardsRef.current.children[index]
+										? "translateX(0)"
+										: "translateX(0)"
 								}
-								transition={"opacity 0.3s"}
+								opacity={
+									selectedCard === cardsRef.current.children[index] ? 1 : 0.4
+								}
+								transition={"opacity 5s"}
 							/>
 						))}
 				</Stack>
 			</Stack>
 			<ChevronUpIcon />
-			<Text>
-				{loading ? (
-					<CircularProgress
-						isIndeterminate
-						color="teal.300"
-						objectFit="contain"
-					/>
-				) : reward && reward?.name ? (
-					`${reward?.name} $${reward?.cardmarket?.prices?.avg30}`
-				) : (
-					"$0.00"
-				)}
-			</Text>
+
+			{loading ? (
+				<CircularProgress
+					isIndeterminate
+					color="teal.300"
+					objectFit="contain"
+				/>
+			) : reward && reward?.name ? (
+				<Text>{`${reward?.name} $${reward?.cardmarket?.prices?.avg30}`}</Text>
+			) : (
+				<Text>{"$0.00"}</Text>
+			)}
 		</Stack>
 	);
 }

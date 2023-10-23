@@ -11,6 +11,7 @@ import {
 	Text,
 	useBreakpointValue,
 	useToast,
+	Progress,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -108,7 +109,11 @@ export default function OpenPack({ title }) {
 					</Button>
 				</Flex>
 			</Stack>
-			<OpenPackSlider set={set} cards={cards} startSlide={startSlide} />
+			{cards.length > 0 ? (
+				<OpenPackSlider set={set} cards={cards} startSlide={startSlide} />
+			) : (
+				<Progress size="xs" isIndeterminate m={20} />
+			)}
 			<Stack direction={{ base: "column", md: "row" }}>
 				<Flex p={8} flex={1} align={"center"} justify={"space-between"}>
 					<Stack spacing={6} w={"full"} maxW={"lg"}>
