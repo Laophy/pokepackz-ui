@@ -3,7 +3,7 @@ import { auth } from "./firebase";
 
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, setLoading } from "./redux/userSlice";
+import { loginUser, setBalance, setLoading } from "./redux/userSlice";
 
 import Footer from "./components/navigation/Footer";
 import Navbar from "./components/navigation/Navbar";
@@ -44,11 +44,35 @@ function App() {
 					})
 				);
 				dispatch(setLoading(false));
+				getUserData(authUser);
 			} else {
 				console.log("User not logged in");
 			}
 		});
 	}, []);
+
+	const getUserData = async (authUser) => {
+		// Get user from DB or create one
+		try {
+			const res = await fetch(
+				`${process.env.REACT_APP_API_ENDPOINT}/api/user/getuser`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(authUser),
+				}
+			);
+			const data = await res.json();
+			if (data) {
+				console.log(data);
+				dispatch(setBalance(data.balance));
+			}
+		} catch (e) {
+			console.warn(e);
+		}
+	};
 
 	// Grabbing a user from global storage via redux
 	const user = useSelector((state) => state.data.user.user);

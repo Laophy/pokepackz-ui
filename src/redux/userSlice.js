@@ -25,6 +25,9 @@ export const userSlice = createSlice({
 		setProfilePicture: (state, action) => {
 			state.user.photoURL = action.payload;
 		},
+		setBalance: (state, action) => {
+			state.user.balance = action.payload;
+		},
 	},
 });
 
@@ -34,4 +37,5 @@ export const {
 	setLoading,
 	setUsername,
 	setProfilePicture,
+	setBalance,
 } = userSlice.actions;
